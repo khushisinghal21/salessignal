@@ -1,0 +1,5 @@
+/salesignal
+/bin/
+*.test
+*.out
+.env

@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SaleSignal · WhatsApp sales that reach Meta</title>
+<style>
+  :root {
+    --bg: #F6F3EE; --paper: #FFFDF9; --ink: #1E1C18; --muted: #6E685E; --line: #E4DED3;
+    --green: #1F7A54; --green-soft: #E3F1EA; --amber: #9A5B00; --amber-soft: #FBEFD9;
+    --red: #A8322A; --red-soft: #F8E3E0; --blue: #2B5C9E; --blue-soft: #E5EDF8;
+    --radius: 14px;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 14px/1.45 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  header.top { display: flex; align-items: baseline; gap: 14px; padding: 22px 32px 6px; flex-wrap: wrap; }
+  header.top h1 { font-size: 20px; margin: 0; letter-spacing: -0.01em; }
+  header.top p { margin: 0; color: var(--muted); }
+  .mode { font-size: 12px; padding: 3px 9px; border-radius: 99px; background: var(--blue-soft); color: var(--blue); }
+  main { display: grid; grid-template-columns: 400px 1fr; gap: 28px; padding: 18px 32px 40px; align-items: start; }
+  @media (max-width: 980px) { main { grid-template-columns: 1fr; } }
+
+  /* Phone */
+  .phone { background: #121110; border-radius: 38px; padding: 12px; box-shadow: 0 20px 50px rgba(30,28,24,.18); position: sticky; top: 16px; }
+  .screen { background: var(--bg); border-radius: 28px; overflow: hidden; height: 780px; display: flex; flex-direction: column; }
+  .appbar { padding: 16px 18px 12px; background: var(--paper); border-bottom: 1px solid var(--line); }
+  .appbar .row { display: flex; justify-content: space-between; align-items: center; }
+  .appbar h2 { margin: 0; font-size: 17px; }
+  .appbar small { color: var(--muted); }
+  select, input { font: inherit; color: inherit; }
+  .appbar select { border: 1px solid var(--line); border-radius: 8px; padding: 4px 8px; background: var(--bg); }
+  .tabs { display: flex; gap: 6px; margin-top: 10px; }
+  .tabs button { border: 0; background: transparent; padding: 6px 10px; border-radius: 99px; color: var(--muted); cursor: pointer; font: inherit; }
+  .tabs button.on { background: var(--ink); color: var(--paper); }
+  .cards { overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 12px; flex: 1; }
+  .empty { color: var(--muted); text-align: center; padding: 40px 16px; }
+
+  .card { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px; }
+  .card .who { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .card .name { font-weight: 600; }
+  .chip { font-size: 11px; padding: 2px 8px; border-radius: 99px; white-space: nowrap; }
+  .chip.ad { background: var(--blue-soft); color: var(--blue); }
+  .chip.organic { background: #EEEAE3; color: var(--muted); }
+  .chip.ok { background: var(--green-soft); color: var(--green); }
+  .chip.warn { background: var(--amber-soft); color: var(--amber); }
+  .chip.bad { background: var(--red-soft); color: var(--red); }
+  .headline { margin: 10px 0 2px; font-size: 13px; color: var(--muted); }
+  .amount { font-size: 26px; font-weight: 650; letter-spacing: -0.02em; }
+  .amount small { font-size: 12px; font-weight: 400; color: var(--muted); margin-left: 6px; }
+  .bar { height: 4px; background: #EEEAE3; border-radius: 4px; margin: 8px 0 10px; overflow: hidden; }
+  .bar i { display: block; height: 100%; background: var(--green); }
+  .evidence { list-style: none; padding: 0; margin: 0 0 10px; display: flex; flex-direction: column; gap: 6px; }
+  .evidence li { font-size: 13px; padding: 7px 10px; border-radius: 10px; background: #F3EFE8; }
+  .evidence li.out { background: var(--green-soft); }
+  .evidence li span { display: block; font-size: 11px; color: var(--muted); }
+  .flag { font-size: 12px; padding: 7px 10px; border-radius: 10px; margin-bottom: 8px; }
+  .flag.bad { background: var(--red-soft); color: var(--red); }
+  .flag.warn { background: var(--amber-soft); color: var(--amber); }
+  .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .btn { border: 1px solid var(--line); background: var(--paper); border-radius: 10px; padding: 9px 12px; cursor: pointer; font: inherit; white-space: nowrap; }
+  .btn.primary { background: var(--green); border-color: var(--green); color: #fff; font-weight: 600; grid-column: 1 / -1; }
+  .btn.ghost { color: var(--muted); }
+  .btn:disabled { opacity: .5; cursor: default; }
+  .edit { display: flex; gap: 6px; margin-bottom: 8px; }
+  .edit input { flex: 1; min-width: 0; border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; background: var(--bg); }
+  .edit select { border: 1px solid var(--line); border-radius: 10px; padding: 8px; background: var(--bg); }
+  .gate { font-size: 12px; background: var(--red-soft); color: var(--red); border-radius: 10px; padding: 8px 10px; margin-bottom: 8px; }
+  .gate ul { margin: 4px 0 0; padding-left: 18px; }
+  .done-note { font-size: 12px; color: var(--muted); margin-top: 6px; }
+
+  /* Ops */
+  .ops h3 { font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 26px 0 10px; font-weight: 600; }
+  .ops h3:first-child { margin-top: 0; }
+  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+  .tile { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px; }
+  .tile b { display: block; font-size: 22px; letter-spacing: -0.02em; }
+  .tile span { color: var(--muted); font-size: 12px; }
+  .panel { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+  table { width: 100%; border-collapse: collapse; }
+  th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); font-size: 13px; vertical-align: top; }
+  th { font-weight: 600; color: var(--muted); font-size: 12px; background: #FBF8F3; }
+  tr:last-child td { border-bottom: 0; }
+  td.num { font-variant-numeric: tabular-nums; }
+  .err { color: var(--red); font-size: 12px; }
+  .controls { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .toggle { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; user-select: none; }
+  .toggle input { width: 16px; height: 16px; accent-color: var(--red); }
+  pre { margin: 0; padding: 14px; font: 12px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; overflow-x: auto; background: #1E1C18; color: #EDE7DC; border-radius: var(--radius); max-height: 340px; }
+  .nudges { display: flex; flex-direction: column; gap: 8px; }
+  .nudge { background: var(--amber-soft); color: var(--amber); padding: 9px 12px; border-radius: 10px; font-size: 13px; }
+  .audit li { list-style: none; padding: 7px 12px; border-bottom: 1px solid var(--line); font-size: 12px; display: grid; grid-template-columns: 34px 120px 1fr; gap: 8px; }
+  .audit { margin: 0; padding: 0; }
+  .audit li:last-child { border-bottom: 0; }
+  .audit code { color: var(--muted); }
+  .split { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 1250px) { .split { grid-template-columns: 1fr; } }
+  .hint { color: var(--muted); font-size: 12px; margin: 6px 0 0; }
+</style>
+</head>
+<body>
+<header class="top">
+  <h1>SaleSignal</h1>
+  <p>Sales closed in WhatsApp, confirmed in one tap, delivered to Meta's Conversions API exactly once.</p>
+  <span class="mode" id="mode"></span>
+</header>
+
+<main>
+  <section>
+    <div class="phone"><div class="screen">
+      <div class="appbar">
+        <div class="row">
+          <div><h2>Sales to confirm</h2><small id="whoami"></small></div>
+          <select id="actor" aria-label="Signed in as"></select>
+        </div>
+        <div class="tabs">
+          <button data-tab="open" class="on">To confirm <span id="openCount"></span></button>
+          <button data-tab="done">Done</button>
+        </div>
+      </div>
+      <div class="cards" id="cards"></div>
+    </div></div>
+  </section>
+
+  <section class="ops">
+    <h3>What reached Meta</h3>
+    <div class="tiles" id="tiles"></div>
+
+    <h3>Needs attention</h3>
+    <div class="nudges" id="nudges"></div>
+
+    <h3>Outbox</h3>
+    <div class="controls" style="margin-bottom:10px">
+      <label class="toggle" id="outageWrap"><input type="checkbox" id="outage"> Simulate a Meta outage</label>
+      <button class="btn" id="reset">Reset demo</button>
+    </div>
+    <div class="panel"><table>
+      <thead><tr><th>Customer</th><th>Event</th><th>Matched by</th><th>State</th><th>Tries</th></tr></thead>
+      <tbody id="outbox"></tbody>
+    </table></div>
+    <p class="hint">Meta does not deduplicate business-messaging events, so each sale gets an idempotency key here. Retryable failures back off and retry; a batch Meta rejects is split so one bad event can't block the rest.</p>
+
+    <div class="split" style="margin-top:8px">
+      <div>
+        <h3>Last request to Meta</h3>
+        <pre id="payload">Nothing sent yet.</pre>
+      </div>
+      <div>
+        <h3>Audit trail <span id="chain" class="chip ok"></span></h3>
+        <div class="panel"><ul class="audit" id="audit"></ul></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+const RULES = {
+  rep_confirms_payment_received: "You confirmed the payment",
+  rep_confirms_payment: "You confirmed the payment",
+  rep_thanks_for_payment: "You thanked them for paying",
+  rep_confirms_order: "You confirmed the order",
+  customer_says_paid: "Customer says they paid",
+  customer_says_payment_done: "Customer says payment is done",
+  customer_says_transferred: "Customer says they transferred",
+  customer_says_paid_hinglish: "Customer says they paid",
+  customer_says_upi_done: "Customer says UPI is done",
+  customer_shares_txn_ref: "Customer shared a transaction ref",
+  customer_asks_if_received: "Customer asked if you got it",
+  customer_says_done_after_payment_request: "Customer replied 'done' to your payment request",
+  screenshot_after_payment_request: "Customer sent an image after you asked for payment",
+  image_after_quote: "Customer sent an image after your quote",
+};
+let state = null, actor = localStorage.getItem("ss_actor") || "rep:alex", tab = "open";
+const editing = {}, gateErrors = {}, busy = {};
+
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
+function money(v, cur) {
+  if (!v) return "Amount unknown";
+  try { return new Intl.NumberFormat(cur === "INR" ? "en-IN" : "en", { style: "currency", currency: cur, minimumFractionDigits: Number.isInteger(v) ? 0 : 2, maximumFractionDigits: 2 }).format(v); }
+  catch { return `${cur} ${v}`; }
+}
+function sums(obj) { const e = Object.entries(obj || {}).filter(([,v]) => v > 0); return e.length ? e.map(([c, v]) => money(v, c)).join(" + ") : "–"; }
+function ago(ts) {
+  const s = (Date.now() - new Date(ts)) / 1000;
+  if (s < 90) return "just now";
+  if (s < 3600) return Math.round(s / 60) + " min ago";
+  if (s < 86400) return Math.round(s / 3600) + " h ago";
+  return Math.round(s / 86400) + " d ago";
+}
+
+async function api(path, opts = {}) {
+  const res = await fetch(path, { ...opts, headers: { "Content-Type": "application/json", "X-Actor": actor, ...(opts.headers || {}) } });
+  const body = await res.json().catch(() => ({}));
+  return { ok: res.ok, status: res.status, body };
+}
+
+async function load() {
+  const r = await api("/api/state");
+  if (!r.ok) return;
+  state = r.body;
+  render();
+}
+
+function render() {
+  $("#mode").textContent = state.dry_run ? "Dry run · nothing is sent to Meta" : "Live · sending to Meta";
+  $("#outageWrap").style.display = state.dry_run ? "" : "none";
+  $("#reset").style.display = state.demo ? "" : "none";
+  $("#outage").checked = !!state.outage;
+
+  const sel = $("#actor");
+  if (!sel.options.length) {
+    for (const a of [...state.reps, "admin"]) sel.add(new Option(a === "admin" ? "Admin (all chats)" : a.replace("rep:", "Rep: ").replace(/: (\w)/, (m, c) => ": " + c.toUpperCase()), a));
+    sel.value = actor;
+  }
+  $("#whoami").textContent = actor === "admin" ? "Every rep's chats" : "Chats assigned to you";
+
+  const open = state.proposals.filter(p => p.status === "open");
+  $("#openCount").textContent = open.length ? `(${open.length})` : "";
+  const focused = document.activeElement && $("#cards").contains(document.activeElement) && document.activeElement.tagName !== "BUTTON";
+  if (!focused) renderCards(tab === "open" ? open : state.proposals.filter(p => p.status !== "open"));
+  renderOps();
+}
+
+function evidenceItem(e) {
+  const out = e.rule.startsWith("rep_");
+  return `<li class="${out ? "out" : ""}"><span>${esc(RULES[e.rule] || e.rule)} · ${ago(e.at)}</span>“${esc(e.snippet)}”</li>`;
+}
+
+function renderCards(list) {
+  const el = $("#cards");
+  if (!list.length) {
+    el.innerHTML = `<div class="empty">${tab === "open" ? "No sales waiting for you. New ones appear here as customers pay." : "Nothing confirmed or dismissed yet."}</div>`;
+    return;
+  }
+  el.innerHTML = list.map(p => {
+    const fromAd = p.path === "ctwa_clid";
+    const head = `<div class="who"><span class="name">${esc(p.customer || p.conversation_id)}</span>
+      <span class="chip ${fromAd ? "ad" : "organic"}">${fromAd ? "From ad" : "Not from an ad"}</span></div>
+      ${p.ad_headline ? `<div class="headline">${esc(p.ad_headline)}</div>` : `<div class="headline">Matched to ads by hashed phone</div>`}`;
+    const amount = `<div class="amount">${money(p.value, p.currency)}<small>${p.value_source === "quote" ? "from your quote" : p.value_source === "message" ? "from the chat" : "enter the amount"}</small></div>`;
+    if (p.status !== "open") {
+      const it = (state.outbox || []).find(o => o.key === p.event_key);
+      const label = { sent: ["ok", "Sent to Meta"], queued: ["warn", "Queued for Meta"], retrying: ["warn", "Retrying: Meta unavailable"], dead: ["bad", "Failed: see outbox"] }[it?.state] || ["warn", "Queued for Meta"];
+      const chip = p.status === "confirmed" ? `<span class="chip ${label[0]}">${label[1]}</span>` : `<span class="chip bad">Not a sale</span>`;
+      return `<div class="card">${head}${amount}<div style="margin-top:6px">${chip}</div>
+        <div class="done-note">${p.status === "confirmed" ? "Confirmed" : "Dismissed"} by ${esc(p.decided_by)} · ${ago(p.decided_at)}${p.reject_reason ? " · " + esc(p.reject_reason) : ""}</div>
+        ${(p.warnings || []).map(w => `<div class="flag warn" style="margin-top:8px">${esc(w)}</div>`).join("")}</div>`;
+    }
+    const flags = [
+      p.contradicted ? `<div class="flag bad">A later message says the payment failed or was refunded. Check before confirming.</div>` : "",
+      p.possible_repeat ? `<div class="flag warn">This chat already has a confirmed sale. Is this a second purchase?</div>` : "",
+    ].join("");
+    const g = gateErrors[p.id];
+    const gate = g ? `<div class="gate"><b>Not sent.</b> ${esc(g.error)}<ul>${(g.gate?.errors || []).map(e => `<li>${esc(e)}</li>`).join("")}</ul></div>` : "";
+    const ed = editing[p.id];
+    const editRow = ed ? `<div class="edit"><input type="number" min="0" step="any" id="v-${p.id}" value="${ed.value}" placeholder="Amount">
+        <select id="c-${p.id}">${["INR","QAR","AED","SAR","USD"].map(c => `<option ${c === ed.currency ? "selected" : ""}>${c}</option>`).join("")}</select></div>` : "";
+    const needsForce = g && (g.gate?.errors || []).some(e => e.includes("sanity cap"));
+    return `<div class="card">${head}${amount}
+      <div class="bar" title="Detector confidence ${p.score}"><i style="width:${Math.round(p.score * 100)}%"></i></div>
+      <ul class="evidence">${p.evidence.map(evidenceItem).join("")}</ul>
+      ${flags}${gate}${editRow}
+      <div class="actions">
+        <button class="btn primary" data-act="confirm" data-id="${p.id}" ${busy[p.id] ? "disabled" : ""}>${needsForce ? "Yes, the amount is right" : ed ? "Confirm this amount" : "Confirm sale"}</button>
+        <button class="btn" data-act="edit" data-id="${p.id}">${ed ? "Cancel edit" : "Edit amount"}</button>
+        <button class="btn ghost" data-act="reject" data-id="${p.id}">Not a sale</button>
+      </div></div>`;
+  }).join("");
+}
+
+function renderOps() {
+  const s = state.stats;
+  $("#tiles").innerHTML = [
+    [sums(s.confirmed_value), `${s.confirmed} sale${s.confirmed === 1 ? "" : "s"} confirmed`],
+    [sums(s.pending_value), `${s.open_proposals} waiting for a tap`],
+    [s.duplicates_suppressed, "duplicates stopped"],
+    [s.gate_rejections, "blocked by pre-flight"],
+    [`${s.from_ads}/${s.conversations}`, "chats with an ad click ID"],
+  ].map(([b, span]) => `<div class="tile"><b>${esc(b)}</b><span>${esc(span)}</span></div>`).join("");
+
+  $("#nudges").innerHTML = state.nudges?.length
+    ? state.nudges.map(n => `<div class="nudge"><b>${esc(n.customer)}</b> · ${money(n.value, n.currency)} · ${esc(n.owner)} — ${esc(n.reason)} (${n.age_hours} h)</div>`).join("")
+    : `<div class="hint">Nothing overdue.</div>`;
+
+  const ob = state.outbox || [];
+  $("#outbox").innerHTML = ob.length ? ob.map(it => {
+    const cls = { sent: "ok", queued: "warn", retrying: "warn", dead: "bad" }[it.state];
+    const cd = it.event.custom_data || {};
+    return `<tr><td>${esc(it.meta?.customer)}</td><td class="num">${esc(it.event.event_name)} · ${money(cd.value, cd.currency)}</td>
+      <td>${it.event.user_data.ctwa_clid ? "ad click ID" : "hashed phone"}</td>
+      <td><span class="chip ${cls}">${esc(it.state)}</span>${it.last_error ? `<div class="err">${esc(it.last_error)}</div>` : ""}</td>
+      <td class="num">${it.attempts}</td></tr>`;
+  }).join("") : `<tr><td colspan="5" class="hint">Confirm a sale to queue it.</td></tr>`;
+
+  if (state.last_request) $("#payload").textContent = JSON.stringify(state.last_request, null, 2);
+
+  $("#chain").textContent = s.audit_broken_at ? `chain broken at #${s.audit_broken_at}` : `chain verified · ${s.audit_entries} entries`;
+  $("#chain").className = "chip " + (s.audit_broken_at ? "bad" : "ok");
+  $("#audit").innerHTML = state.audit.map(e => `<li><code>#${e.seq}</code><span>${esc(e.actor)}</span><span>${esc(e.action.replaceAll("_", " "))} <code>${esc(e.subject)}</code></span></li>`).join("");
+}
+
+$("#cards").addEventListener("click", async (ev) => {
+  const btn = ev.target.closest("button[data-act]");
+  if (!btn) return;
+  const id = btn.dataset.id, p = state.proposals.find(x => x.id === id);
+  if (btn.dataset.act === "edit") {
+    if (editing[id]) delete editing[id]; else editing[id] = { value: p.value || "", currency: p.currency };
+    renderCards(state.proposals.filter(x => tab === "open" ? x.status === "open" : x.status !== "open"));
+    $(`#v-${id}`)?.focus();
+    return;
+  }
+  if (btn.dataset.act === "reject") {
+    const reason = prompt("Why isn't this a sale? (helps tune the detector)", "Not a payment");
+    if (reason === null) return;
+    await api(`/api/proposals/${id}/reject`, { method: "POST", body: JSON.stringify({ reason }) });
+    delete gateErrors[id]; delete editing[id];
+    return load();
+  }
+  const body = {};
+  if (editing[id]) {
+    body.value = parseFloat($(`#v-${id}`).value) || 0;
+    body.currency = $(`#c-${id}`).value;
+    editing[id] = { value: body.value || "", currency: body.currency };
+  }
+  if (gateErrors[id]?.gate?.errors?.some(e => e.includes("sanity cap"))) body.force = true;
+  busy[id] = true;
+  const r = await api(`/api/proposals/${id}/confirm`, { method: "POST", body: JSON.stringify(body) });
+  busy[id] = false;
+  if (r.ok) { delete gateErrors[id]; delete editing[id]; }
+  else {
+    gateErrors[id] = r.body;
+    if (r.status === 422 && r.body.error?.includes("amount") && !editing[id]) editing[id] = { value: "", currency: p.currency };
+  }
+  load();
+});
+
+document.querySelectorAll(".tabs button").forEach(b => b.addEventListener("click", () => {
+  tab = b.dataset.tab;
+  document.querySelectorAll(".tabs button").forEach(x => x.classList.toggle("on", x === b));
+  render();
+}));
+$("#actor").addEventListener("change", (e) => { actor = e.target.value; localStorage.setItem("ss_actor", actor); load(); });
+$("#outage").addEventListener("change", async (e) => { await api("/api/demo/outage", { method: "POST", body: JSON.stringify({ on: e.target.checked }) }); load(); });
+$("#reset").addEventListener("click", async () => {
+  for (const k of [editing, gateErrors]) for (const id in k) delete k[id];
+  await api("/api/demo/reset", { method: "POST" });
+  $("#payload").textContent = "Nothing sent yet.";
+  load();
+});
+
+load();
+setInterval(load, 1500);
+</script>
+</body>
+</html>

@@ -1,0 +1,191 @@
+{
+  "note": "Hand-written synthetic WhatsApp sales chats modelled on Aixel's customer segments (D2C, pharmacy, real estate, education, coffee). 'c:' is the customer, 'b:' is the business, 'c[img]:' is a customer image with its caption. Labels say whether money actually changed hands in the chat (a Purchase Meta should hear about) and for how much. The same author wrote the rules and these chats, so treat the numbers as a regression harness, not a production accuracy claim.",
+  "chats": [
+    {"id": "p01-d2c-gpay", "currency": "INR", "label": {"purchase": true, "value": 1499, "currency": "INR"}, "msgs": [
+      "c: Hi, saw your ad. How much is the collagen?",
+      "b: Hi! The Glow Collagen 30-day pack is ₹1,499 with free shipping.",
+      "c: ok",
+      "c: paid ₹1,499 on gpay"]},
+    {"id": "p02-screenshot-after-upi", "currency": "INR", "label": {"purchase": true, "value": 899, "currency": "INR"}, "msgs": [
+      "c: price?",
+      "b: ₹899 for 1 jar. UPI: brand@okicici. Please share a screenshot after paying",
+      "c[img]: "]},
+    {"id": "p03-rep-confirms", "currency": "INR", "label": {"purchase": true, "value": 2250, "currency": "INR"}, "msgs": [
+      "c: Sent the money",
+      "b: Received your payment of ₹2,250. Order confirmed, dispatching tomorrow."]},
+    {"id": "p04-hinglish", "currency": "INR", "label": {"purchase": true, "value": 2247, "currency": "INR"}, "msgs": [
+      "c: 3 packs chahiye",
+      "b: Total ₹2,247 hai. UPI: verdant@okhdfc",
+      "c: payment kar diya bhai"]},
+    {"id": "p05-qatar-pharmacy", "currency": "QAR", "label": {"purchase": true, "value": 90, "currency": "QAR"}, "msgs": [
+      "c: Do you have vitamin D3 1000IU?",
+      "b: Yes, QAR 45 per bottle. Shall I send the payment link?",
+      "c: yes 2 bottles please",
+      "b: Payment link sent. Total QAR 90.",
+      "c: Done, paid"]},
+    {"id": "p06-aed-clinic", "currency": "AED", "label": {"purchase": true, "value": 350, "currency": "AED"}, "msgs": [
+      "c: How much is the hydrafacial?",
+      "b: The facial package is 350 AED.",
+      "c: transferred 350 AED just now"]},
+    {"id": "p07-usd", "currency": "USD", "label": {"purchase": true, "value": 64, "currency": "USD"}, "msgs": [
+      "b: The blue linen shirt is back. 10% off till Sunday.",
+      "c: Do you have it in M? I'll take two.",
+      "b: Yes! Two in M come to $64.",
+      "c: I sent you $64 on PayPal"]},
+    {"id": "p08-failed-then-success", "currency": "INR", "label": {"purchase": true, "value": 899, "currency": "INR"}, "msgs": [
+      "b: It's ₹899. UPI: brand@okaxis",
+      "c: paid",
+      "b: Hmm, we haven't received the payment yet",
+      "c: it says failed, trying again",
+      "c: done now, paid ₹899"]},
+    {"id": "p09-order-number", "currency": "INR", "label": {"purchase": true, "value": 1598, "currency": "INR"}, "msgs": [
+      "c: I want the duo pack",
+      "b: Your order #VC-1182 is confirmed. Total paid: ₹1,598"]},
+    {"id": "p10-utr-only", "currency": "INR", "label": {"purchase": true, "value": 3000, "currency": "INR"}, "msgs": [
+      "b: Please pay ₹3,000 to the account below and share the UTR",
+      "c: UTR 412398765432"]},
+    {"id": "p11-real-estate-token", "currency": "INR", "label": {"purchase": true, "value": 25000, "currency": "INR"}, "msgs": [
+      "c: I liked the 2BHK in Whitefield. How do I book?",
+      "b: Booking amount is ₹25,000, you can transfer to our account. Details below.",
+      "c: Transferred ₹25,000. Ref no 8823341"]},
+    {"id": "p12-course-fee", "currency": "INR", "label": {"purchase": true, "value": 4999, "currency": "INR"}, "msgs": [
+      "c: Is the weekend cohort still open?",
+      "b: Yes! The cohort fee is ₹4,999. Pay here: rzp.io/l/abc",
+      "c: Payment done!"]},
+    {"id": "p13-rep-hinglish", "currency": "INR", "label": {"purchase": true, "value": 1199, "currency": "INR"}, "msgs": [
+      "b: ₹1,199 ka hai, UPI pe bhej do",
+      "c: bhej diya",
+      "b: Payment mil gaya, thank you! ₹1,199"]},
+    {"id": "p14-coffee", "currency": "INR", "label": {"purchase": true, "value": 1180, "currency": "INR"}, "msgs": [
+      "c: I'll take two bags of the Monsoon Malabar",
+      "b: Great, that's ₹1,180 for two. Sending the payment link.",
+      "c: paid via the link"]},
+    {"id": "p15-screenshot-caption", "currency": "INR", "label": {"purchase": true, "value": 650, "currency": "INR"}, "msgs": [
+      "b: Please pay ₹650 on the QR",
+      "c[img]: here's the screenshot"]},
+    {"id": "p16-thanks-for-order", "currency": "INR", "label": {"purchase": true, "value": 2000, "currency": "INR"}, "msgs": [
+      "b: The gift box is ₹2,000",
+      "c: Gpay done",
+      "b: Thank you for your order! ₹2,000 received."]},
+    {"id": "p17-bundle-total", "currency": "INR", "label": {"purchase": true, "value": 2098, "currency": "INR"}, "msgs": [
+      "b: Collagen ₹1,499 + Vitamin C ₹599 = ₹2,098",
+      "c: paid 2098"]},
+    {"id": "p18-asks-then-rep-confirms", "currency": "INR", "label": {"purchase": true, "value": 750, "currency": "INR"}, "msgs": [
+      "c: did you receive my payment?",
+      "b: Yes, got it! ₹750 received, thanks"]},
+    {"id": "p19-phone-number-noise", "currency": "INR", "label": {"purchase": true, "value": 1299, "currency": "INR"}, "msgs": [
+      "b: The serum is ₹1,299",
+      "c: paid ₹1,299, call me on 9876543210 for delivery"]},
+    {"id": "p20-k-suffix", "currency": "INR", "label": {"purchase": true, "value": 1500, "currency": "INR"}, "msgs": [
+      "b: Consultation is 1500 rs",
+      "c: sent 1.5k on phonepe"]},
+    {"id": "p21-lakh-neft", "currency": "INR", "label": {"purchase": true, "value": 150000, "currency": "INR"}, "msgs": [
+      "b: The plot booking amount is ₹1,50,000",
+      "c: NEFT done, UTR 554433221100"]},
+    {"id": "p22-riyal-default", "currency": "SAR", "label": {"purchase": true, "value": 120, "currency": "SAR"}, "msgs": [
+      "b: Price is 120 riyals",
+      "c: paid"]},
+    {"id": "p23-verified-after-screenshot", "currency": "INR", "label": {"purchase": true, "value": 999, "currency": "INR"}, "msgs": [
+      "b: ₹999 for the starter kit",
+      "c: ok how to pay",
+      "b: Share a screenshot after paying on UPI brand@ybl",
+      "c[img]: ",
+      "b: Payment verified ✅ Order #A-5512"]},
+    {"id": "p24-advance", "currency": "INR", "label": {"purchase": true, "value": 5000, "currency": "INR"}, "msgs": [
+      "b: 50% advance: ₹5,000 to confirm the booking",
+      "c: advance paid ₹5,000"]},
+    {"id": "p25-paid-later-message", "currency": "INR", "label": {"purchase": true, "value": 1349, "currency": "INR"}, "msgs": [
+      "b: Final price ₹1,349",
+      "c: Paid! Will share the screenshot later"]},
+    {"id": "h01-sorted", "currency": "INR", "label": {"purchase": true, "value": 1750, "currency": "INR"}, "msgs": [
+      "b: Total ₹1,750",
+      "c: check your account, it's sorted"]},
+    {"id": "h02-emoji-only", "currency": "INR", "label": {"purchase": true, "value": 600, "currency": "INR"}, "msgs": [
+      "b: Please pay ₹600 via UPI",
+      "c: ✅"]},
+    {"id": "h03-debited", "currency": "INR", "label": {"purchase": true, "value": 2400, "currency": "INR"}, "msgs": [
+      "b: That's ₹2,400 for the family pack",
+      "c: amount debited from my side, please dispatch"]},
+
+    {"id": "n01-price-only", "currency": "INR", "label": {"purchase": false}, "msgs": [
+      "c: how much?",
+      "b: ₹1,499",
+      "c: ok thanks"]},
+    {"id": "n02-objection", "currency": "INR", "label": {"purchase": false}, "msgs": [
+      "c: ₹1,499 is too expensive",
+      "b: We can do ₹1,349",
+      "c: will think and let you know"]},
+    {"id": "n03-pay-tomorrow", "currency": "INR", "label": {"purchase": false}, "msgs": [
+      "b: Total ₹899. UPI: x@ok",
+      "c: I'll pay tomorrow morning"]},
+    {"id": "n04-how-to-pay", "currency": "INR", "label": {"purchase": false}, "msgs": [
+      "c: How do I pay? Can I pay by card?",
+      "b: Yes, here's the link: ₹1,200",
+      "c: ok"]},
+    {"id": "n05-failed-not-retried", "currency": "INR", "label": {"purchase": false}, "msgs": [
+      "c: paid",
+      "b: We haven't received it yet",
+      "c: oh it shows failed. I'll try later"]},
+    {"id": "n06-refund", "currency": "INR", "label": {"purchase": false}, "msgs": [
+      "c: paid ₹1,499",
+      "b: received, thanks",
+      "c: actually please cancel and refund"]},
+    {"id": "n07-past-order", "currency": "INR", "label": {"purchase": false}, "msgs": [
+      "c: I paid last time via UPI, can I get COD this time?"]},
+    {"id": "n08-site-visit", "currency": "INR", "label": {"purchase": false}, "msgs": [
+      "c: Can I visit the site on Saturday?",
+      "b: Sure, 11 am works. Address: Plot 14, Sarjapur Road",
+      "c: done, see you"]},
+    {"id": "n09-once-received", "currency": "INR", "label": {"purchase": false}, "msgs": [
+      "b: Once we receive the payment, we will ship it the same day",
+      "c: ok"]},
+    {"id": "n10-delivery-complaint", "currency": "INR", "label": {"purchase": false}, "msgs": [
+      "c: I haven't received my order yet, it's been 5 days"]},
+    {"id": "n11-payment-methods", "currency": "INR", "label": {"purchase": false}, "msgs": [
+      "c: Do you accept GPay?",
+      "b: Yes! GPay, PhonePe and cards"]},
+    {"id": "n12-skin-photo", "currency": "INR", "label": {"purchase": false}, "msgs": [
+      "b: Please send a photo of the affected area",
+      "c[img]: "]},
+    {"id": "n13-image-question", "currency": "INR", "label": {"purchase": false}, "msgs": [
+      "b: ₹1,499 for the pack",
+      "c[img]: is this the same one?"]},
+    {"id": "n14-pending", "currency": "INR", "label": {"purchase": false}, "msgs": [
+      "b: ₹999 please",
+      "c: payment pending dikha raha hai"]},
+    {"id": "n15-link-request", "currency": "INR", "label": {"purchase": false}, "msgs": [
+      "c: send payment link please",
+      "b: Here: rzp.io/l/xyz, total ₹2,500",
+      "c: thanks"]},
+    {"id": "n16-haggle-future", "currency": "INR", "label": {"purchase": false}, "msgs": [
+      "c: can you do 1200?",
+      "b: Best price ₹1,299",
+      "c: ok will pay tonight"]},
+    {"id": "n17-broadcast-reply", "currency": "INR", "label": {"purchase": false}, "msgs": [
+      "b: Back in stock! 10% off till Sunday, now ₹1,349",
+      "c: do you have it in M?"]},
+    {"id": "n18-paid-ad", "currency": "INR", "label": {"purchase": false}, "msgs": [
+      "c: I saw your paid ad on Instagram, what's in the kit?",
+      "b: Collagen + Vitamin C, ₹2,098"]},
+    {"id": "n19-cod", "currency": "INR", "label": {"purchase": false}, "msgs": [
+      "c: COD please, 1 pack",
+      "b: Order confirmed ✅ ₹999, pay cash on delivery"]},
+    {"id": "n20-not-reflecting", "currency": "INR", "label": {"purchase": false}, "msgs": [
+      "c: Is the payment received on your side?",
+      "b: Checking, payment not reflecting yet"]},
+    {"id": "n21-cart-reminder", "currency": "INR", "label": {"purchase": false}, "msgs": [
+      "b: Hi, just a reminder your cart is waiting. Pay ₹799 to confirm.",
+      "c: not now"]},
+    {"id": "n22-hinglish-future", "currency": "INR", "label": {"purchase": false}, "msgs": [
+      "b: ₹1,500 total",
+      "c: kal payment kar dunga"]},
+    {"id": "n23-shade-question", "currency": "INR", "label": {"purchase": false}, "msgs": [
+      "b: UPI: x@okaxis, ₹1,100. Share screenshot after paying",
+      "c[img]: which shade is this?"]},
+    {"id": "n24-want-to-pay", "currency": "INR", "label": {"purchase": false}, "msgs": [
+      "c: I want to pay ₹1,499, send QR"]},
+    {"id": "n25-paid-days-ago-other", "currency": "INR", "label": {"purchase": false}, "msgs": [
+      "c: I paid my electricity bill 2 days ago and the app still shows due, is this your support?",
+      "b: Sorry, we're a skincare brand!"]}
+  ]
+}
